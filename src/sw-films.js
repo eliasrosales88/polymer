@@ -11,6 +11,8 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import './shared-styles.js';
 import '@polymer/paper-button/paper-button.js';
+import '../node_modules/@polymer/paper-card/paper-card';
+import '@polymer/iron-ajax/iron-ajax.js';
 
 class SWFilms extends PolymerElement {
 
@@ -30,15 +32,52 @@ class SWFilms extends PolymerElement {
 
           padding: 10px;
         }
+        paper-card{
+          margin: 1em;
+          padding: 1em
+        }
+        paper-button {
+          --paper-button-ink-color: blue
+        }
       </style>
 
       <paper-button id="increment">+</paper-button>
       <h1> [[ number ]] </h1>
       <paper-button on-click="decrement">-</paper-button>
+      <iron-ajax
+        auto
+        url="https://swapi.co/api/films/"
+        handle-as="json"
+        on-response="handleResponse"
+        debounce-duration="300">
+      </iron-ajax>
+      <template is="dom-repeat" items="{{films}}" as="film">
+        <paper-card>
+          <div class="card-content">
+            <div class="cafe-header">
+              {{film.title}}
+              <span>{{film.release_date}}</span>
+          </div>
+          <p>{{film.director}}</p>
+          <p class="cafe-light"> {{film.opening_crawl}}</p>
+          <card-actions>
+            <div class="horizontal justified">
+              <span>{{film.producer}}</span>
+              <span>{{film.id}}</span>
+          </card-actions>
+        </paper-card>
+
+      </template>
     `;
   }
 
 
+  handleResponse(response) {
+   this.films= response.detail.response.results;
+    
+  }
+
+  
 
   constructor(){
     super();
@@ -50,16 +89,18 @@ decrement(){
 }
 
 
-  connectedCallback() {
-    super.connectedCallback();
-    console.log("connected");
-    
-    this.shadowRoot.querySelector("#increment").addEventListener('click', () => {
-      this.number += 1;
-    })
-
-    
-  }
+connectedCallback() {
+  super.connectedCallback();
+  console.log("connected");
+  
+  this.shadowRoot.querySelector("#increment").addEventListener('click', () => {
+    this.number += 1;
+  })
+  
+  
+  this.listaSuper = [{name: "banana"}, {name: "banana"}, {name: "banana"}, {name: "banana"}];
+  
+}
 
   
   
