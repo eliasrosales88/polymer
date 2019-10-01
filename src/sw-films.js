@@ -32,9 +32,9 @@ class SWFilms extends PolymerElement {
         }
       </style>
 
-      <paper-button on-click="decrement">-</paper-button>
-      <h1> [[ number ]] </h1>
       <paper-button id="increment">+</paper-button>
+      <h1> [[ number ]] </h1>
+      <paper-button on-click="decrement">-</paper-button>
     `;
   }
 
